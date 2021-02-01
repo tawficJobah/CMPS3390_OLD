@@ -1,9 +1,11 @@
+package tJobah.a2; 
 public class Calc {
 
 
 	public static String evaluate(String line){
 		double partA, partB;		
 		String[] parts = line.split(" ");
+		
 
 		if(parts.length != 3){
 			return "invalid input";
@@ -25,7 +27,7 @@ public class Calc {
 			return "invalid input";
 		}
 
-
+		//does the equations after checks
 		switch(parts[1]){
 			case "+":
 				return Double.toString(partA + partB);

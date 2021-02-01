@@ -1,4 +1,4 @@
-package jforsythe.a2;
+package tJobah.a2;
 import java.util.Scanner;
 
 
@@ -13,4 +13,6 @@ public class Main{
 
 		String line;
 		while(!(line = scanner.nextLine()).equalsIgnoreCase("quit")){
+			//runs program unitl user quits
 			System.out.println(Calc.evalute(line));
+		}
