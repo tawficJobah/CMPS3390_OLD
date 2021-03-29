@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "893400441961",
+    "project_id": "tjobaha10",
+    "storage_bucket": "tjobaha10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893400441961:android:9d7fdd6e6035d63ee7eef8",
+        "android_client_info": {
+          "package_name": "tjobah.a10"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "893400441961-9bs2mpet528006s3arndvcd063e5p9el.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9UECX3Ubgo4Z3cu2O28Kj4g6c01fJAS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "893400441961-9bs2mpet528006s3arndvcd063e5p9el.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
