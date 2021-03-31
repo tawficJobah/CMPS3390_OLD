@@ -28,6 +28,10 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
     private String selectedCollection = "Todo";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    /**
+     * main controller for app
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
 
     }
 
+    /**
+     * updates list and shows small message when updating
+     */
     private void updateList() {
         showToast("Getting List", Toast.LENGTH_SHORT);
         Database.getList(db,selectedCollection,items,itemsAdapter);
@@ -79,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         });
     }
 
+    /**
+     * deleted todos when long click is pressed
+     */
     private void setupLongClickHandler() {
         listView.setOnItemLongClickListener((parent, view, position, id) -> {
             ListItem tmpItem = items.remove(position);
@@ -90,12 +100,24 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         });
     }
 
+    /**
+     * Creates small messages
+     * @param message
+     * @param length
+     */
     private void showToast(String message, int length) {
             Toast toast = Toast.makeText(this,message,length);
             toast.setGravity(Gravity.CENTER,0,-30);
             toast.show();
         }
 
+    /**
+     * takes in todos and pushed into DB
+     * @param v
+     * @param actionId
+     * @param event
+     * @return
+     */
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if(event == null || event.getAction() == KeyEvent.ACTION_UP){

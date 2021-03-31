@@ -21,7 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Database {
-
+    /**
+     * connects to DB and adds todos
+     * @param db
+     * @param selectedCollection
+     * @param item
+     */
     public static void add(FirebaseFirestore db, String selectedCollection, ListItem item){
         Map<String, Object> listitem = new HashMap<>();
         listitem.put("item",item);
@@ -43,6 +48,13 @@ public class Database {
 
     }
 
+    /**
+     * gets todos and time  from DB
+     * @param db
+     * @param selectedCollection
+     * @param items
+     * @param itemsAdapter
+     */
     public static void  getList(FirebaseFirestore db, String selectedCollection,
                                ArrayList<ListItem> items, ArrayAdapter<ListItem> itemsAdapter){
         db.collection(selectedCollection)
@@ -69,6 +81,14 @@ public class Database {
         });
     }
 
+    /**
+     * connects and removes todos from DB
+     * @param db
+     * @param selectedCollection
+     * @param items
+     * @param itemsAdapter
+     * @param removedItem
+     */
     public static void removeItem(FirebaseFirestore db, String selectedCollection
             , ArrayList<ListItem> items, ArrayAdapter<ListItem> itemsAdapter, ListItem removedItem){
         db.collection(selectedCollection).whereEqualTo("item.dttm",removedItem.getDttm())
