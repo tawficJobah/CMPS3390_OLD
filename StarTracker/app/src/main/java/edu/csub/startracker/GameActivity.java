@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.WindowManager;
 
 public class GameActivity extends AppCompatActivity {
@@ -27,12 +29,31 @@ public class GameActivity extends AppCompatActivity {
         setContentView(gameView);
     }
 
+    /**
+     * game over with delay
+     */
+    public void gameOver(){
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        },6000);
+    }
 
+    /**
+     * pauses game
+     */
     @Override
     protected void onPause(){
         super.onPause();
         gameView.pause();
     }
+
+    /**
+     * resumes game
+     */
     @Override
     protected void onResume() {
         super.onResume();

@@ -6,12 +6,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class Laser {
+public class Laser implements GameObject{
 
     private float x, y;
     private Bitmap laser;
     private float dpi;
     private Paint paint = new Paint();
+    private float health = 100f;
+    private final int width, height;
 
     /**
      * constructor for laser
@@ -19,6 +21,8 @@ public class Laser {
      */
     public Laser(Resources res){
         laser = BitmapFactory.decodeResource(res,R.mipmap.bullet);
+        width = laser.getWidth();
+        height = laser.getHeight();
         dpi = res.getDisplayMetrics().densityDpi;
     }
 
@@ -57,14 +61,54 @@ public class Laser {
      * gets the height of the laser
      * @return
      */
+    @Override
     public float getHeight(){
-        return laser.getHeight();
+        return height;
+    }
+
+    /**
+     * TODO
+     * @return
+     */
+    @Override
+    public boolean isAlive() {
+        return health > 0f;
+    }
+
+    /**
+     * TODO
+     * @return
+     */
+    @Override
+    public float getHealth() {
+        return health;
+    }
+
+    /**
+     * TODO
+     * @param damage
+     * @return
+     */
+    @Override
+    public float takeDamage(float damage) {
+        return health -= damage;
+    }
+
+    /**
+     * TODO
+     * @param repairAmount
+     * @return
+     */
+    @Override
+    public float addHealth(float repairAmount) {
+        return health += repairAmount;
     }
 
     /**
      * gets the x value
      * @return
      */
+    @Override
     public float getX() {
         return x;
     }
@@ -81,8 +125,18 @@ public class Laser {
      * gets the y
      * @return
      */
+    @Override
     public float getY() {
         return y;
+    }
+
+    /**
+     * gets width
+     * @return
+     */
+    @Override
+    public float getWidth() {
+        return width;
     }
 
     /**
