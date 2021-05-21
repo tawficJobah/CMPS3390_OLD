@@ -10,14 +10,14 @@ public class Enemy01 implements GameObject{
      private float x, y, ySpeed;
      private final float width, height;
      private float health = 100f;
-     private final Bitmap enemy, enemy_left, enemy_right;
+     private final Bitmap enemy;
      private Bitmap curImage;
      private final float dpi;
      private int screenWidth, screenHeight;
      private Paint paint = new Paint();
 
     /**
-     * constructor for enemy
+     * enemy constructor that sets the width, height, and image
      * @param res
      * @param x
      * @param y
@@ -26,34 +26,18 @@ public class Enemy01 implements GameObject{
          this.x = x;
          this.y = y;
          enemy = BitmapFactory.decodeResource(res, R.mipmap.enemy01);
-         enemy_left = BitmapFactory.decodeResource(res, R.mipmap.enemy01_left);
-         enemy_right = BitmapFactory.decodeResource(res, R.mipmap.enemy01_right);
          curImage = enemy;
          width = curImage.getWidth();
          height = curImage.getHeight();
-
          dpi = res.getDisplayMetrics().densityDpi;
          screenHeight = res.getDisplayMetrics().heightPixels;
          screenWidth = res.getDisplayMetrics().widthPixels;
-
-         ySpeed = 0.02f * dpi;
      }
-
-    /**
-     * updates enemies locations and speeds
-     */
     @Override
-    public void update() {
-        float xOff = (float) (0.01f * screenWidth * Math.sin(y/ (0.04f * screenHeight)));
-        x += xOff;
-        curImage = xOff > 0 ? enemy_left: enemy_right;
-        if(Math.abs(xOff) < 2) curImage = enemy;
-
-        y += ySpeed;
-    }
+    public void update() { }
 
     /**
-     * draws enemies
+     * draws image
      * @param canvas
      */
     @Override
@@ -62,7 +46,7 @@ public class Enemy01 implements GameObject{
     }
 
     /**
-     * gets x
+     * returns x axis
      * @return
      */
     @Override
@@ -71,7 +55,7 @@ public class Enemy01 implements GameObject{
     }
 
     /**
-     * gets Y
+     * returns y axis
      * @return
      */
     @Override
@@ -80,7 +64,7 @@ public class Enemy01 implements GameObject{
     }
 
     /**
-     * gets width
+     * returns width
      * @return
      */
     @Override
@@ -89,7 +73,7 @@ public class Enemy01 implements GameObject{
     }
 
     /**
-     * gets height
+     * returns height
      * @return
      */
     @Override
@@ -98,7 +82,7 @@ public class Enemy01 implements GameObject{
     }
 
     /**
-     * checks if enemy one is alive
+     * returns health of enemy
      * @return
      */
     @Override
@@ -106,32 +90,4 @@ public class Enemy01 implements GameObject{
         return health > 0f;
     }
 
-    /**
-     * returns enemy ones health
-     * @return
-     */
-    @Override
-    public float getHealth() {
-        return health;
-    }
-
-    /**
-     * lowers enemies health
-     * @param damage
-     * @return
-     */
-    @Override
-    public float takeDamage(float damage) {
-        return health -= damage;
-    }
-
-    /**
-     * TODO add enemies gaining health
-     * @param repairAmount
-     * @return
-     */
-    @Override
-    public float addHealth(float repairAmount) {
-        return health += repairAmount;
-    }
 }

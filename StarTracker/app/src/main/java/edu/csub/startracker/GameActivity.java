@@ -12,7 +12,7 @@ public class GameActivity extends AppCompatActivity {
     private GameView gameView;
 
     /**
-     * Opening screen of the game
+     * sets the layout of the screen and removes top border
      * @param savedInstanceState
      */
     @Override
@@ -30,7 +30,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * game over with delay
+     * restarts the game after a few seconds
      */
     public void gameOver(){
         Handler handler = new Handler(Looper.getMainLooper());
@@ -41,23 +41,8 @@ public class GameActivity extends AppCompatActivity {
             }
         },6000);
     }
-
-    /**
-     * pauses game
-     */
     @Override
-    protected void onPause(){
-        super.onPause();
-        gameView.pause();
-    }
-
-    /**
-     * resumes game
-     */
+    protected void onPause(){ super.onPause();gameView.pause(); }
     @Override
-    protected void onResume() {
-        super.onResume();
-        gameView.resume();
-    }
-
+    protected void onResume() { super.onResume();gameView.resume(); }
 }

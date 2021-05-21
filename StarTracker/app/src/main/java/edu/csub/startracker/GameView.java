@@ -19,27 +19,21 @@ public class GameView extends SurfaceView implements Runnable {
     private Thread thread;
     private int touchX,touchY;
     private final Player player;
-    private ArrayList<Laser> lasers;
     private ArrayList<GameObject> enemies;
     private GameActivity gameActivity;
-
     private EnemySpawner spawner;
     private final float screenWidth,screenHeight;
     private Paint textPaint = new Paint();
     private Paint highScorePaint = new Paint();
-    HighScore highScore = HighScore.getInstance();
+
     /**
-     * creates background
-     * creates player
-     * constructor for game scene
+     * constructor to set parameters
      * @param context
      * @param screenX
      * @param screenY
      */
     public GameView(GameActivity context, int screenX, int screenY) {
         super(context);
-
-
         Resources res = getResources();
         screenHeight = res.getDisplayMetrics().widthPixels;
         screenWidth = res.getDisplayMetrics().heightPixels;
@@ -55,13 +49,12 @@ public class GameView extends SurfaceView implements Runnable {
         player = new Player(res);
         spawner = new EnemySpawner(res);
 
-        lasers = player.getLasers();
         enemies = spawner.getEnemies();
         gameActivity = context;
     }
 
     /**
-     * reads click of the mouse or touch
+     * returns the x and y of the mouse click
      * @param event
      * @return
      */
@@ -73,7 +66,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
-     * main driver of the game
+     * main game engine
      */
     @Override
     public void run() {
@@ -85,7 +78,8 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
-     * updates game scene
+     * updates background,touchevents, and enemy spawning
+     * couldnt get collisions to work properly
      */
     private void update() {
         background1.update();
@@ -93,87 +87,33 @@ public class GameView extends SurfaceView implements Runnable {
         player.updateTouch(touchX,touchY);
         player.update();
         spawner.update();
-        checkAllCollisions();
-        checkEnemiesOffScreen();
+        //checkCollision(player, (GameObject) enemies);
     }
 
     /**
-     * checks if enemy is off screen and shows game over
-     */
-    private void checkEnemiesOffScreen() {
-        for(GameObject go : enemies){
-            if(go.getY() > screenHeight){
-                player.takeDamage(100);
-                go.takeDamage(100);
-                gameActivity.gameOver();
-            }
-        }
-    }
-
-    /**
-     * collisions check
-     */
-    private void checkAllCollisions() {
-        for(Laser laser : lasers){
-            for(GameObject go : enemies){
-                if(checkCollision(laser,go)){
-                    laser.takeDamage((100));
-                    go.takeDamage(25);
-                    highScore.addScore(25);
-                }
-            }
-        }
-
-        for(GameObject go : enemies){
-            if(checkCollision(player, go)){
-                player.takeDamage(100);
-                go.takeDamage(100);
-                gameActivity.gameOver();
-            }
-        }
-    }
-
-    /**
-     * checks collisions between player and enemy
-     * @param g1
-     * @param g2
-     * @return
-     */
-    private boolean checkCollision(GameObject g1, GameObject g2){
-        return g1.getX() < g2.getX() + g2.getWidth() &&
-                g1.getX() + g1.getWidth() > g2.getX() &&
-                g1.getY() < g2.getY() + g2.getHeight() &&
-                g1.getY() + g1.getHeight() > g2.getY();
-    }
-
-
-    /**
-     * draws the game scene
+     * draws enemies and background
      */
     private void draw(){
         if(getHolder().getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
-
             background1.draw(canvas);
             background2.draw(canvas);
-
-
             if(!player.isAlive()){
                 canvas.drawText("LOSER!!",screenWidth / 8f,screenHeight / 2f,textPaint);
             }
-
-            canvas.drawText(String.format("Score: %s",
-                    highScore.getCurScore()),screenWidth * 0.02f,
-                    screenHeight * 0.11f,highScorePaint);
             player.draw(canvas);
             spawner.draw(canvas);
 
             getHolder().unlockCanvasAndPost(canvas);
         }
     }
+    private boolean checkCollision(GameObject g1, GameObject g2){
+        return g1.getY() < g2.getY() + g2.getHeight() &&
+                g1.getY() + g1.getHeight() > g2.getY();
+    }
 
     /**
-     * pauses scene
+     * checks for game still playing
      */
     public void pause(){
         isPlaying = false;
@@ -185,8 +125,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
-     * starts playing the game
-     *
+     * resumes and restarts game
      */
     public void resume(){
         isPlaying = true;
@@ -195,7 +134,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
-     * function that slows down game
+     * puts the game to sleep for a few miliseconds
      */
     private void sleep() {
         try {

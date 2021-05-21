@@ -11,124 +11,63 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Player implements GameObject{
-    private float x,y, prevX, prevY;
+    private float x,y,speed;
+    private float jumpS,weight;
     private final Bitmap playerImg;
-    private final Bitmap playerLeft;
-    private final Bitmap playerRight;
-    private Bitmap curImage;
     private Paint paint = new Paint();
     private final float dpi;
-    private int frameTicks = 0, shotTicks = 0;
     private final Resources res;
     private final int width, height;
-
-
-    ArrayList<Laser> lasers = new ArrayList<>();
-    private float health = 100f;
+    private float floorHeight;
 
     /**
-     * constructor for player class
+     * constructor for player
      * @param res
      */
     public Player(Resources res){
         this.res = res;
         playerImg = BitmapFactory.decodeResource(res,R.mipmap.player);
-        playerLeft = BitmapFactory.decodeResource(res,R.mipmap.player_left);
-        playerRight = BitmapFactory.decodeResource(res,R.mipmap.player_right);
-
-        curImage = playerImg;
-        width = curImage.getWidth();
-        height = curImage.getHeight();
-
+        width = playerImg.getWidth();
+        height = playerImg.getHeight();
         DisplayMetrics dm = res.getDisplayMetrics();
         dpi = dm.densityDpi;
-
         x = (dm.widthPixels/2f) - (playerImg.getWidth() /2f);
-        y = (dm.heightPixels * 0.75f);
+        y = (dm.heightPixels * 0.90f);
+        speed = 3;
+        weight = 1;
+        floorHeight = (dm.heightPixels * 0.90f);
 
     }
 
     /**
-     * updates player location
+     * basic jumping for player with a nice gravity like bounce
      * @param touchX
      * @param touchY
      */
     public void updateTouch(int touchX, int touchY){
-        if(touchX > 0 && touchY > 0){
-            this.x = touchX - (playerImg.getWidth() / 2f);
-            this.y = touchY - (playerImg.getHeight() * 2f);
+
+        if(touchX > 0 && touchY > 0) {
+            this.x = touchX + speed;
+            if (y >= floorHeight)
+                jumpS = 20;
+            this.y -= jumpS;
+            jumpS -= weight;
+            if (y >= floorHeight) {
+                this.y = floorHeight;
+            }
         }
     }
-
-    /**
-     * updates players location and info
-     */
     @Override
-    public void update() {
-        if(health <=0) return;
-        if(Math.abs(x - prevX) < 0.04 * dpi){
-            frameTicks++;
-        }else {
-            frameTicks = 0;
-        }
-
-        if(this.x < prevX - 0.04 * dpi) {
-            curImage = playerLeft;
-        }else if(this.x > prevX + 0.04 * dpi){
-            curImage = playerRight;
-        } else if (frameTicks > 15){
-            curImage = playerImg;
-        }
-
-        prevX = x;
-        prevY = y;
-
-        shotTicks++;
-
-        if(shotTicks >= 20){
-            Laser tmp = new Laser(this.res);
-            tmp.setX(x + (playerImg.getWidth() /2) - tmp.getMidX());
-            tmp.setY(y - tmp.getHeight() / 2f);
-            lasers.add(tmp);
-
-            shotTicks = 0;
-        }
-
-        for(Iterator<Laser> iterator = lasers.iterator(); iterator.hasNext();){
-            Laser laser = iterator.next();
-            if(!laser.isOnScreen() || !laser.isAlive()){
-                iterator.remove();
-            }
-        }
-
-
-        /*for(Laser laser : lasers){
-            if(!laser.isOnScreen()){
-                lasers.remove(laser);
-            }
-        }*/
-
-        for(Laser laser: lasers){
-            laser.update();
-        }
-
-    }
+    public void update() {  }
 
     /**
-     * draws the player
+     * sets the picture to the player position
      * @param canvas
      */
-    public void draw(Canvas canvas) {
-        if(health <=0) return;
-        canvas.drawBitmap(curImage, this.x, this.y, this.paint);
-
-        for (Laser laser : lasers) {
-            laser.draw(canvas);
-        }
-    }
+    public void draw(Canvas canvas) { canvas.drawBitmap(playerImg, this.x, this.y, this.paint); }
 
     /**
-     * get X
+     * gets the x axis
      * @return
      */
     @Override
@@ -137,7 +76,7 @@ public class Player implements GameObject{
     }
 
     /**
-     * gets y
+     * gets the y axis
      * @return
      */
     @Override
@@ -146,7 +85,7 @@ public class Player implements GameObject{
     }
 
     /**
-     * gets width
+     * gets the width of the player
      * @return
      */
     @Override
@@ -155,7 +94,7 @@ public class Player implements GameObject{
     }
 
     /**
-     * gets height
+     * gets the height of the player
      * @return
      */
     @Override
@@ -164,45 +103,11 @@ public class Player implements GameObject{
     }
 
     /**
-     * checks if player is alive
+     * returns if player is alive
      * @return
      */
     @Override
     public boolean isAlive() {
-        return health > 0;
+        return true;
     }
-
-    /**
-     * checks players health
-     * @return
-     */
-    @Override
-    public float getHealth() {
-        return health;
-    }
-
-    /**
-     * returns health after damage
-     * @param damage
-     * @return
-     */
-    @Override
-    public float takeDamage(float damage) {
-        return health -= damage;
-    }
-
-    /**
-     * TODO add way to add health
-     * @param repairAmount
-     * @return
-     */
-    @Override
-    public float addHealth(float repairAmount) {
-        return health += repairAmount;
-    }
-
-    public ArrayList<Laser> getLasers(){
-        return lasers;
-    }
-
 }
