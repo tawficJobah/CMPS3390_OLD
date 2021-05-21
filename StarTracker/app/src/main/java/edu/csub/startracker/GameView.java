@@ -87,7 +87,7 @@ public class GameView extends SurfaceView implements Runnable {
         player.updateTouch(touchX,touchY);
         player.update();
         spawner.update();
-        //checkCollision(player, (GameObject) enemies);
+        //collision would work
     }
 
     /**
@@ -107,10 +107,10 @@ public class GameView extends SurfaceView implements Runnable {
             getHolder().unlockCanvasAndPost(canvas);
         }
     }
-    private boolean checkCollision(GameObject g1, GameObject g2){
-        return g1.getY() < g2.getY() + g2.getHeight() &&
-                g1.getY() + g1.getHeight() > g2.getY();
-    }
+    //private boolean checkCollision(GameObject g1, GameObject g2){
+        //couldnt get this to work and i have no clue
+        //this game sucks and didnt have time to change the sprites 
+    //}
 
     /**
      * checks for game still playing

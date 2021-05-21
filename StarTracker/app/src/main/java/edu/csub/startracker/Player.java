@@ -46,12 +46,17 @@ public class Player implements GameObject{
      */
     public void updateTouch(int touchX, int touchY){
 
+        //checks if there was a click before player jumps
+        //not sure why it keeps jumping over and over
         if(touchX > 0 && touchY > 0) {
             this.x = touchX + speed;
-            if (y >= floorHeight)
-                jumpS = 20;
+            //checks to see if y is equal to floorheight then sets
+            //the players y to jump 20 pixels up
+            if (y == floorHeight) jumpS = 20;
+            //slows down the jump by minus the y and using weights to slightly slow it down
             this.y -= jumpS;
             jumpS -= weight;
+            //checks if y is below the floor so it doesnt go through
             if (y >= floorHeight) {
                 this.y = floorHeight;
             }
